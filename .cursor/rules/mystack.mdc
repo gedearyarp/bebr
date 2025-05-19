@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Technical Stack
+- Typescript for the backend
+- Postgres Supabase for database
