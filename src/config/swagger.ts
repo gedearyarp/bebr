@@ -1,4 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -10,9 +13,11 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server',
-      },
+        url: process.env.NODE_ENV === 'production' 
+          ? 'https://beyond-running.vercel.app' 
+          : 'http://localhost:3000',
+        description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Development server',
+      }
     ],
     components: {
       securitySchemes: {

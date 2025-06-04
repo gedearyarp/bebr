@@ -37,10 +37,10 @@ export const signup = async (req: Request, res: Response) => {
       });
     }
 
-    const { username, email, password }: UserInput = req.body;
+    const { username, email, password, firstName, lastName }: UserInput = req.body;
 
     // Validate input
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !firstName || !lastName) {
       return res.status(400).json({
         status: 'error',
         message: 'All fields are required'
@@ -79,6 +79,8 @@ export const signup = async (req: Request, res: Response) => {
       .insert({
         username,
         email,
+        firstName,
+        lastName,
         passwordHash
       })
       .select()
@@ -97,6 +99,8 @@ export const signup = async (req: Request, res: Response) => {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
       createdAt: newUser.createdAt
     };
 

@@ -13,6 +13,8 @@ const router = express.Router();
  *         - username
  *         - email
  *         - password
+ *         - firstName
+ *         - lastName
  *       properties:
  *         username:
  *           type: string
@@ -21,6 +23,12 @@ const router = express.Router();
  *           type: string
  *           format: email
  *           description: The email of the user
+ *         firstName:
+ *           type: string
+ *           description: The first name of the user
+ *         lastName:
+ *           type: string
+ *           description: The last name of the user
  *         password:
  *           type: string
  *           format: password
@@ -41,6 +49,10 @@ const router = express.Router();
  *             username:
  *               type: string
  *             email:
+ *               type: string
+ *             firstName:
+ *               type: string
+ *             lastName:
  *               type: string
  *             createdAt:
  *               type: string
