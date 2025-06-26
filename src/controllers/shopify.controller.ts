@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import Shopify from 'shopify-api-node';
+import { OrderHistoryService } from '../services/orderHistory.service';
 
 dotenv.config();
 
@@ -128,16 +129,37 @@ export const handleWebhook = async (req: Request, res: Response) => {
 
 // Helper functions for webhook processing
 async function handleOrderCreated(orderData: any) {
-  // Store order information in database or trigger any business logic
-  console.log('Order created:', orderData.id);
+  // Only record for registered users
+  const email = orderData.email;
+  const userStatus = await OrderHistoryService.isUserSignedIn(email);
+  if (!userStatus.isSignedIn || !userStatus.userId) return;
+  await OrderHistoryService.createOrderHistory({
+    userId: userStatus.userId,
+    orderId: orderData.id,
+    status: 'abandoned',
+    checkoutUrl: orderData.checkout_url || orderData.invoice_url,
+    orderData
+  });
 }
 
 async function handleOrderPaid(orderData: any) {
-  // Update order status or trigger fulfillment
-  console.log('Order paid:', orderData.id);
+  // Only update for registered users
+  const email = orderData.email;
+  const userStatus = await OrderHistoryService.isUserSignedIn(email);
+  if (!userStatus.isSignedIn || !userStatus.userId) return;
+  await OrderHistoryService.updateOrderHistory(orderData.id, {
+    status: 'paid',
+    orderData
+  });
 }
 
 async function handleOrderCancelled(orderData: any) {
-  // Handle cancellation logic
-  console.log('Order cancelled:', orderData.id);
+  // Only update for registered users
+  const email = orderData.email;
+  const userStatus = await OrderHistoryService.isUserSignedIn(email);
+  if (!userStatus.isSignedIn || !userStatus.userId) return;
+  await OrderHistoryService.updateOrderHistory(orderData.id, {
+    status: 'cancelled',
+    orderData
+  });
 } 
