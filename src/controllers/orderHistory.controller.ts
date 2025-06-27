@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { OrderHistoryService } from '../services/orderHistory.service';
-import { getOrderHistoryByUser, getOrderHistoryByOrderId } from '../services/orderHistory.service';
 
 /**
  * Get order history for the authenticated user
@@ -46,7 +45,18 @@ export const getOrderHistoryByEmail = async (req: Request, res: Response) => {
       });
     }
 
-    const orderHistory = await OrderHistoryService.getOrderHistoryByEmail(email);
+    // Since there's no direct method to get order history by email,
+    // we'll check if the user is signed in and then get their order history
+    const { isSignedIn, userId } = await OrderHistoryService.isUserSignedIn(email);
+    
+    if (!isSignedIn || !userId) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'No order history found for this email'
+      });
+    }
+
+    const orderHistory = await OrderHistoryService.getUserOrderHistory(userId);
 
     return res.status(200).json({
       status: 'success',
@@ -76,7 +86,8 @@ export const getOrderHistoryByShopifyId = async (req: Request, res: Response) =>
       });
     }
 
-    const orderHistory = await OrderHistoryService.getOrderHistoryByShopifyId(shopifyOrderId);
+    // Use the existing getOrderHistoryByOrderId method since shopifyOrderId is the orderId
+    const orderHistory = await OrderHistoryService.getOrderHistoryByOrderId(shopifyOrderId);
 
     if (!orderHistory) {
       return res.status(404).json({
