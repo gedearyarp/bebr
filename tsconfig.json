@@ -27,7 +27,6 @@
 
     /* Modules */
     "module": "commonjs",                                /* Specify what module code is generated. */
-    "rootDir": "./src",
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
@@ -111,6 +110,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["./src/**/*.ts", "./src/**/*.d.ts"],
+  "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./api/**/*.ts"],
   "exclude": ["node_modules"]
 }
