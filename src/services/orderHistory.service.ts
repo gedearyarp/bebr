@@ -25,7 +25,7 @@ export class OrderHistoryService {
   /**
    * Update an existing order history record
    */
-  static async updateOrderHistory(orderId: string, updates: UpdateOrderHistoryInput): Promise<OrderHistory | null> {
+static async updateOrderHistory(orderId: string, updates: UpdateOrderHistoryInput): Promise<OrderHistory | null> {
     const { data, error } = await supabase
       .from('order_history')
       .update({

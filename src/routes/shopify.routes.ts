@@ -90,7 +90,11 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.post('/create-checkout', authenticate as unknown as express.RequestHandler, createCheckout as unknown as express.RequestHandler);
+router.post(
+    '/create-checkout',
+    authenticate as unknown as express.RequestHandler,
+    createCheckout as unknown as express.RequestHandler
+);
 
 /**
  * @swagger
@@ -122,4 +126,4 @@ router.post('/create-checkout', authenticate as unknown as express.RequestHandle
  */
 router.post('/webhook', handleWebhook as unknown as express.RequestHandler);
 
-export default router; 
+export default router;

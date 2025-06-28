@@ -24,21 +24,21 @@ app.use('/api/shopify', shopifyRoutes);
 
 // Health check endpoint
 app.get('/health', (_req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok' });
+    res.status(200).json({ status: 'ok' });
 });
 
 // Error handling middleware
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({
-    status: 'error',
-    message: 'Something went wrong!'
-  });
+    console.error(err.stack);
+    res.status(500).json({
+        status: 'error',
+        message: 'Something went wrong!',
+    });
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
 
-export default app; 
+export default app;

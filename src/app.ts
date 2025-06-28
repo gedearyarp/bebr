@@ -9,7 +9,10 @@ import shopifyRoutes from './routes/shopify.routes';
 
 const app = express();
 
-// Middleware
+// Middleware khusus untuk Shopify webhook agar bisa akses raw body
+app.use('/api/shopify/webhook', express.raw({ type: 'application/json' }));
+
+// Middleware umum
 app.use(cors(corsOptions)); // Apply CORS configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

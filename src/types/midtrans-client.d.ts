@@ -61,6 +61,6 @@ declare module 'midtrans-client' {
 
     export = {
         CoreApi,
-        Snap
+        Snap,
     };
-} 
+}
