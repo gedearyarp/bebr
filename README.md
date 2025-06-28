@@ -131,6 +131,46 @@ npm start
 - `POST /api/shopify/create-checkout`: Create a checkout with Shopify
 - `POST /api/shopify/webhook`: Webhook for Shopify order notifications
 
+## Testing Shopify Webhook Locally with ngrok
+
+To test Shopify webhooks on your local development environment, follow these steps:
+
+1. **Start your local server**
+   ```sh
+   npm run dev
+   ```
+   Ensure your server is running (e.g., on http://localhost:3000 or your chosen port).
+
+2. **Install ngrok (if not already installed)**
+   ```sh
+   npm install -g ngrok
+   ```
+   Or download from [ngrok.com](https://ngrok.com/download).
+
+3. **Expose your local server with ngrok**
+   ```sh
+   ngrok http 3000
+   ```
+   Replace `3000` with your local port if different. ngrok will provide a public URL like `https://xxxxxx.ngrok.io`.
+
+4. **Register the webhook in Shopify Admin**
+   - Go to **Shopify Admin → Settings → Notifications → Webhooks**.
+   - Click **Add webhook**.
+   - Choose the event you want to test (e.g., Order creation).
+   - Set the URL to: `https://xxxxxx.ngrok.io/api/shopify/webhook`
+   - Save the webhook.
+
+5. **Send a test notification**
+   - In Shopify Admin, click the webhook you just created.
+   - Click **Send test notification**.
+
+6. **Check your local server logs/response**
+   - The payload from Shopify will be printed in your terminal and returned in the API response (in non-production mode).
+
+**Note:**
+- Make sure your local server is accessible and not blocked by firewall.
+- The `/api/shopify/webhook` endpoint is ready to receive and log payloads for development/testing.
+
 ## License
 
 MIT 

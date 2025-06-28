@@ -68,6 +68,17 @@ export const createCheckout = async (req: Request, res: Response) => {
 // Handle Shopify webhook
 export const handleWebhook = async (req: Request, res: Response) => {
   try {
+    // DEVELOPMENT: log and return payload for testing
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Shopify Webhook Payload:', req.body);
+      return res.status(200).json({
+        status: 'success',
+        message: 'Webhook received (dev mode)',
+        data: req.body
+      });
+    }
+
+    // --- original production logic di bawah sini ---
     // Verify webhook signature
     const hmacHeader = req.headers['x-shopify-hmac-sha256'] as string;
     const webhookSecret = process.env.SHOPIFY_WEBHOOK_SECRET;
