@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS order_history (
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     order_id VARCHAR(64) NOT NULL,
     status VARCHAR(16) NOT NULL CHECK (status IN ('abandoned', 'pending', 'paid', 'cancelled')),
-    checkout_url TEXT,
     order_data JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

@@ -68,20 +68,6 @@ export const createCheckout = async (req: Request, res: Response) => {
 // Handle Shopify webhook
 export const handleWebhook = async (req: Request, res: Response) => {
     try {
-        // DEVELOPMENT: log and return payload for testing
-        // if (process.env.NODE_ENV !== 'production') {
-        //   const topic = req.headers['x-shopify-topic'] as string;
-        //   console.log('Shopify Webhook Topic:', topic);
-        //   console.log('Shopify Webhook Payload:', req.body);
-        //   return res.status(200).json({
-        //     status: 'success',
-        //     message: 'Webhook received (dev mode)',
-        //     topic,
-        //     data: req.body
-        //   });
-        // }
-
-        // --- original production logic di bawah sini ---
         // Verify webhook signature
         const hmacHeader = req.headers['x-shopify-hmac-sha256'] as string;
         const webhookSecret = process.env.SHOPIFY_WEBHOOK_SECRET;
@@ -151,41 +137,32 @@ export const handleWebhook = async (req: Request, res: Response) => {
 
 // Helper functions for webhook processing
 async function handleOrderCreated(orderData: any) {
-    // Only record for registered users
+    // Only record for registered emails
     const email = orderData.email;
-    const userStatus = await OrderHistoryService.isUserSignedIn(email);
-    if (!userStatus.isSignedIn || !userStatus.userId) return;
     await OrderHistoryService.createOrderHistory({
-        userId: userStatus.userId,
+        email,
         orderId: orderData.id,
         status: 'abandoned',
-        checkoutUrl: orderData.checkout_url || orderData.invoice_url,
         orderData,
     });
 }
 
 async function handleOrderPaid(orderData: any) {
-    // Only insert for registered users
-    console.log('orderData', orderData);
+    // Only insert for registered emails
     const email = orderData.email;
-    const userStatus = await OrderHistoryService.isUserSignedIn(email);
-    if (!userStatus.isSignedIn || !userStatus.userId) {
-        userStatus.userId = orderData.email;
-    }
     await OrderHistoryService.createOrderHistory({
-        userId: userStatus.userId!,
+        email,
         orderId: orderData.id,
         status: 'paid',
-        checkoutUrl: orderData.checkout_url || orderData.invoice_url,
         orderData,
     });
 }
 
 async function handleOrderCancelled(orderData: any) {
-    // Only update for registered users
+    // Only update for registered emails
     const email = orderData.email;
-    const userStatus = await OrderHistoryService.isUserSignedIn(email);
-    if (!userStatus.isSignedIn || !userStatus.userId) return;
+    const userStatus = await OrderHistoryService.isUserRegistered(email);
+    if (!userStatus.isRegistered) return;
     await OrderHistoryService.updateOrderHistory(orderData.id, {
         status: 'cancelled',
         orderData,

@@ -44,7 +44,6 @@ describe('OrderHistoryService', () => {
         userId: 'user-123',
         orderId: 'test-order-123',
         status: 'pending',
-        checkoutUrl: 'https://checkout.url',
         orderData: { id: 'test-order-123', email: 'test@example.com' }
       };
 
@@ -53,7 +52,6 @@ describe('OrderHistoryService', () => {
         user_id: 'user-123',
         order_id: 'test-order-123',
         status: 'pending',
-        checkout_url: 'https://checkout.url',
         order_data: { id: 'test-order-123', email: 'test@example.com' },
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z'
@@ -70,7 +68,6 @@ describe('OrderHistoryService', () => {
         userId: 'user-123',
         orderId: 'test-order-123',
         status: 'pending',
-        checkoutUrl: 'https://checkout.url',
         orderData: { id: 'test-order-123', email: 'test@example.com' },
         createdAt: new Date('2024-01-01T00:00:00Z'),
         updatedAt: new Date('2024-01-01T00:00:00Z')
@@ -144,7 +141,6 @@ describe('OrderHistoryService', () => {
         user_id: 'user-123',
         order_id: 'shopify-order-123',
         status: 'fulfilled',
-        checkout_url: 'https://checkout.url',
         order_data: mockOrderData,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z'
@@ -208,7 +204,6 @@ describe('OrderHistoryService', () => {
         user_id: 'user-123',
         order_id: 'shopify-order-123',
         status: 'pending',
-        checkout_url: 'https://checkout.url',
         order_data: mockOrderData,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z'
@@ -242,7 +237,6 @@ describe('OrderHistoryService', () => {
       userId,
       orderId,
       status: 'abandoned',
-      checkoutUrl: 'https://checkout.url',
       orderData
     });
     expect(result).toHaveProperty('id');
