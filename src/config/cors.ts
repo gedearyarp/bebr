@@ -7,6 +7,8 @@ const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS?.split(',') || [
     'http://localhost:3000',
     'https://demo.beyond-running.com',
     'https://beyond-running.vercel.app',
+    'https://beyond-running.com',
+    'https://www.beyond-running.com',
 ];
 
 const corsOptions: CorsOptions = {
