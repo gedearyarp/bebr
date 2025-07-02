@@ -14,6 +14,7 @@ const corsOptions: CorsOptions = {
         origin: string | undefined,
         callback: (err: Error | null, allow?: boolean) => void
     ) {
+        console.log('CORS request from origin:', origin);
         // Allow requests with no origin (like mobile apps, curl, Postman)
         if (!origin) {
             callback(null, true);
@@ -23,7 +24,8 @@ const corsOptions: CorsOptions = {
         if (allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'));
+            // callback(new Error('Not allowed by CORS'));
+            callback(null, false); // Return false instead of error to avoid 500
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
